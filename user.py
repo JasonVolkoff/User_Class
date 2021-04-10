@@ -1,9 +1,3 @@
-# For this assignment, we'll add some functionality to the User class:
-# make_withdrawal(self, amount) - have this method decrease the user's balance by the amount specified
-# display_user_balance(self) - have this method print the user's name and account balance to the terminal
-# eg. "User: Guido van Rossum, Balance: $150
-# BONUS: transfer_money(self, other_user, amount) - have this method decrease the user's balance by the amount and add that amount to other other_user's balance
-
 class User:
     counter = 0
 
@@ -44,7 +38,24 @@ class User:
         return self
 
 
-# Create three instances
+class BankAccount:
+    # don't forget to add some default values for these parameters!
+    def __init__(self, int_rate=0.01, balance=0):
+        self.int_rate = int_rate
+
+   def deposit(self, amount):
+           # your code here
+
+    def withdraw(self, amount):
+           # your code here
+
+    def display_account_info(self):
+           # your code here
+
+    def yield_interest(self):
+           # your code here
+
+    # Create three instances
 john = User("John Doe", "johnDoe@doeDomain.com")
 jason = User("Jason Doe", "jasonDoe@doeDomain.com")
 julie = User("Julie Doe", "julieDoe@doeDoamin.com")
