@@ -4,7 +4,7 @@ class User:
     def __init__(self, name, email):
         self.name = name
         self.email = email
-        self.account_balance = 0
+        self.account = BankAccount(int_rate=.02, balance=0)
         User.counter += 1
     # adding the deposit method
 
@@ -39,23 +39,42 @@ class User:
 
 
 class BankAccount:
-    # don't forget to add some default values for these parameters!
     def __init__(self, int_rate=0.01, balance=0):
         self.int_rate = int_rate
+        self.balance = balance
 
-   def deposit(self, amount):
-           # your code here
+    def deposit(self, amount):
+        self.balance += amount
+        return self
 
     def withdraw(self, amount):
-           # your code here
+        self.balance -= amount
+        if self.balance < 0:
+            self.balance -= 5
+            print("Insufficient funds: Charging a $5 fee.")
+        return self
 
     def display_account_info(self):
-           # your code here
+        print(f"Balance: ${self.balance}")
+        return self
 
     def yield_interest(self):
-           # your code here
+        if self.balance > 0:
+            self.balance += self.int_rate * self.balance
+        else:
+            print("Balance is negative")
+        return self
 
-    # Create three instances
+
+# instantiate two
+john = BankAccount(int_rate=.08)
+jason = BankAccount()
+# test methods on both accounts
+john.deposit(10).deposit(20).deposit(30).withdraw(
+    10).yield_interest().display_account_info()
+jason.deposit(100).deposit(100).withdraw(25).withdraw(25).withdraw(
+    25).withdraw(25).yield_interest().display_account_info()
+# Create three instances
 john = User("John Doe", "johnDoe@doeDomain.com")
 jason = User("Jason Doe", "jasonDoe@doeDomain.com")
 julie = User("Julie Doe", "julieDoe@doeDoamin.com")
