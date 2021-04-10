@@ -4,7 +4,7 @@ class User:
     def __init__(self, name, email):
         self.name = name
         self.email = email
-        self.account = BankAccount(int_rate=.02, balance=0)
+        self.account = BankAccount(int_rate=.02)
         User.counter += 1
     # adding the deposit method
 
@@ -15,11 +15,12 @@ class User:
 
     # takes an argument that is the amount of the withdrawl, then deincrements the balance by that amount
     def make_withdrawal(self, amount):
-        if self.account.balance > 0:
-            self.account.withdraw(amount)
-        else:
+        self.account.withdraw(amount)
+        if self.account.balance < 0:
+            User.display_user_balance(self)
             print(f"{self.name} has insufficient funds: Charging a $5.00 fee.")
-            self.account.withdraw(amount-5)
+            self.account.withdraw(5)
+
         return self
 
     def display_user_balance(self):  # takes no argument, self is implied
@@ -27,8 +28,8 @@ class User:
         # Then prints the respective user's balance
         print(f"{self.name}'s balance is: ${str(self.account.display_account_info())}")
         return self
-    # takes 2 arguments: one for the user who receives the money, another for the amount
 
+    # takes 2 arguments: one for the user who receives the money, another for the amount
     def transfer_money(self, other_user, amount):
         # calls the withdrawl function for the user who is transferring; then calls the deposit function for the other user - both by the amount
         if User.counter > 1:
@@ -38,9 +39,13 @@ class User:
             print("Cannot transfer: there is only one User instance.")
         return self
 
+    def yield_interest(self):
+        self.account.yield_interest()
+        return self
+
 
 class BankAccount:
-    def __init__(self, int_rate=0.01, balance=0):
+    def __init__(self, int_rate, balance=0):
         self.int_rate = int_rate
         self.balance = balance
 
@@ -78,12 +83,12 @@ julie = User("Julie Doe", "julieDoe@doeDoamin.com")
 # Make three deposits, one withdrawl, then display balance
 john.make_deposit(45).make_deposit(5).make_deposit(
     15).make_withdrawal(3).display_user_balance()
-# Second user makes 2 deposits, 2 withdrawls, then displays balance
+# Second user makes 2 deposits, 2 withdrawls, applys interest, then displays balance
 jason.make_deposit(100).make_deposit(100).make_withdrawal(
-    5).make_withdrawal(10).display_user_balance()
+    5).make_withdrawal(10).yield_interest().display_user_balance()
 # Third user makes 1 deposit, 3 withdrawls, then displays balance
 julie.make_deposit(100).make_withdrawal(40).make_withdrawal(
     50).make_withdrawal(60).display_user_balance()
 # Second user transfers money to the third user, prints both balances
-jason.transfer_money(julie, 50).display_user_balance()
+jason.transfer_money(julie, 55).display_user_balance()
 julie.display_user_balance()
