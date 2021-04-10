@@ -10,21 +10,22 @@ class User:
 
     # takes an argument that is the amount of the deposit, then increments the balance by that amount
     def make_deposit(self, amount):
-        self.account_balance += amount
+        self.account.deposit(amount)
         return self
 
     # takes an argument that is the amount of the withdrawl, then deincrements the balance by that amount
     def make_withdrawal(self, amount):
-        self.account_balance -= amount
+        if self.account.balance > 0:
+            self.account.withdraw(amount)
+        else:
+            print(f"{self.name} has insufficient funds: Charging a $5.00 fee.")
+            self.account.withdraw(amount-5)
         return self
 
     def display_user_balance(self):  # takes no argument, self is implied
         # Checks if the user is overdrafted
         # Then prints the respective user's balance
-        if self.account_balance >= 0:
-            print(f"{self.name}'s balance is: {self.account_balance}")
-        else:
-            print(f"{self.name} has overdrafted. Balance is: {self.account_balance}")
+        print(f"{self.name}'s balance is: ${str(self.account.display_account_info())}")
         return self
     # takes 2 arguments: one for the user who receives the money, another for the amount
 
@@ -49,14 +50,10 @@ class BankAccount:
 
     def withdraw(self, amount):
         self.balance -= amount
-        if self.balance < 0:
-            self.balance -= 5
-            print("Insufficient funds: Charging a $5 fee.")
         return self
 
     def display_account_info(self):
-        print(f"Balance: ${self.balance}")
-        return self
+        return str(self.balance)
 
     def yield_interest(self):
         if self.balance > 0:
@@ -67,14 +64,14 @@ class BankAccount:
 
 
 # instantiate two
-john = BankAccount(int_rate=.08)
-jason = BankAccount()
-# test methods on both accounts
-john.deposit(10).deposit(20).deposit(30).withdraw(
-    10).yield_interest().display_account_info()
-jason.deposit(100).deposit(100).withdraw(25).withdraw(25).withdraw(
-    25).withdraw(25).yield_interest().display_account_info()
-# Create three instances
+# john = BankAccount(int_rate=.08)
+# jason = BankAccount()
+# # test methods on both accounts
+# john.deposit(10).deposit(20).deposit(30).withdraw(
+#     10).yield_interest().display_account_info()
+# jason.deposit(100).deposit(100).withdraw(25).withdraw(25).withdraw(
+#     25).withdraw(25).yield_interest().display_account_info()
+# # Create three instances
 john = User("John Doe", "johnDoe@doeDomain.com")
 jason = User("Jason Doe", "jasonDoe@doeDomain.com")
 julie = User("Julie Doe", "julieDoe@doeDoamin.com")
