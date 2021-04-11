@@ -92,3 +92,4 @@ julie.make_deposit(100).make_withdrawal(40).make_withdrawal(
 # Second user transfers money to the third user, prints both balances
 jason.transfer_money(julie, 55).display_user_balance()
 julie.display_user_balance()
+print(locals())
